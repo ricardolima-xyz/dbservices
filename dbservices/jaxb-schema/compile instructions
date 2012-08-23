@@ -1,0 +1,2 @@
+# on this directory type the command
+xjc schema.xsd -d ../src -p net.baquara.dbservices.dbschema

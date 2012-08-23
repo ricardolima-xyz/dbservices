@@ -1,0 +1,316 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<db-schema>
+	<!-- User-set contains passwords without encryption. Take care on a backup! -->
+	<super-user username="adm" password="adm"/>
+		
+	<table-schema>
+		<table name="testTable">
+		</table>
+		
+		<table name="nextId">
+			<!-- no primary keys on this table because it has only one row -->
+			<column name="clientId" datatype="long"/>
+			<column name="invoiceId" datatype="long"/>
+			<column name="invoiceSettingsId" datatype="long"/>
+			<column name="paymentTypeId" datatype="long"/>
+			<column name="quantifierId" datatype="long"/>
+			<column name="supplierId" datatype="long"/>
+			<column name="transactionId" datatype="long"/>
+			<column name="transactionItemId" datatype="long"/>
+			<column name="transactionObjectId" datatype="long"/>
+			<column name="transactionObjectCategoryId" datatype="long"/>
+			<column name="transactionObjectHistoryId" datatype="long"/>
+			<column name="userId" datatype="long"/>
+			<column name="userPermissionsId" datatype="long"/>
+		</table>
+		
+		<table name="client">
+			<column name="id" datatype="long" primary-key-id="clientId"/>
+			<column name="client_active" datatype="boolean"/>
+			<column name="abbreviation" datatype="string" size="25"/>
+			<column name="addressCity" datatype="string" size="50"/>
+			<column name="addressPostalCode" datatype="string" size="12"/>
+			<column name="addressState" datatype="string" size="2"/>
+			<column name="addressStreet" datatype="string" size="40"/>
+			<column name="fullName" datatype="string" size="50"/>
+			<column name="phone1" datatype="string" size="30"/>
+			<column name="phone2" datatype="string" size="30"/>
+			<column name="phone3" datatype="string" size="30"/>
+			<column name="taxIdNumber" datatype="string" size="20"/>
+			<column name="customField1" datatype="string" size="200"/>
+			<column name="customField2" datatype="string" size="200"/>
+			<column name="customField3" datatype="string" size="200"/>
+			<column name="customField4" datatype="string" size="200"/>
+			<column name="customField5" datatype="string" size="200"/>
+			<column name="contact" datatype="string" size="128"/>
+			<column name="invoiceSettingsId" datatype="long" foreign-key-id="invoiceSettingsId"/>
+			<column name="invoiceSettingsType" datatype="string" size="128"/>
+		</table>
+		
+		<table name="invoice">
+			<column name="id" datatype="long" primary-key-id="invoiceId"/>
+			<column name="clientId" datatype="long" foreign-key-id="clientId"/>
+			<column name="startDate" datatype="date"/>
+			<column name="closingDate" datatype="date"/>
+			<column name="dueDate" datatype="date"/>
+			<column name="paymentDate" datatype="date"/>
+			<column name="paymentTypeId" datatype="long" foreign-key-id="paymentTypeId"/>
+			<column name="paymentInfo" datatype="string" size="255"/>
+		</table>
+		
+		<table name="invoiceSettings">
+			<column name="id" datatype="long" primary-key-id="invoiceSettingsId"/>
+			<column name="creditLimit" datatype="double"/>
+			<column name="blocked" datatype="boolean"/>
+			<column name="customField1" datatype="string" size="255"/>
+		</table>
+		
+		<table name="invoiceSettingsBiweekly">
+			<column name="invoiceSettingsId" datatype="long" foreign-key-id="invoiceSettingsId"/>
+			<column name="closingDay1" datatype="integer"/>
+			<column name="dueDay1" datatype="integer"/>
+			<column name="closingDay2" datatype="integer"/>
+			<column name="dueDay2" datatype="integer"/>
+		</table>
+		
+		<table name="invoiceSettingsCustom">
+			<column name="invoiceSettingsId" datatype="long" foreign-key-id="invoiceSettingsId"/>
+			<column name="interval1" datatype="boolean"/>
+			<column name="startDay1" datatype="integer"/>
+			<column name="closingDay1" datatype="integer"/>
+			<column name="dueDay1" datatype="integer"/>
+			<column name="interval2" datatype="boolean"/>
+			<column name="startDay2" datatype="integer"/>
+			<column name="closingDay2" datatype="integer"/>
+			<column name="dueDay2" datatype="integer"/>
+			<column name="interval3" datatype="boolean"/>
+			<column name="startDay3" datatype="integer"/>
+			<column name="closingDay3" datatype="integer"/>
+			<column name="dueDay3" datatype="integer"/>
+			<column name="interval4" datatype="boolean"/>
+			<column name="startDay4" datatype="integer"/>
+			<column name="closingDay4" datatype="integer"/>
+			<column name="dueDay4" datatype="integer"/>
+		</table>
+		
+		<table name="invoiceSettingsManual">
+			<column name="invoiceSettingsId" datatype="long" foreign-key-id="invoiceSettingsId"/>
+			<column name="info" datatype="string" size="255"/>
+		</table>
+		
+		<table name="invoiceSettingsMonthly">
+			<column name="invoiceSettingsId" datatype="long" foreign-key-id="invoiceSettingsId"/>
+			<column name="closingDay" datatype="integer"/>
+			<column name="dueDay" datatype="integer"/>
+		</table>
+		
+		<table name="invoiceSettingsWeekly">
+			<column name="invoiceSettingsId" datatype="long" foreign-key-id="invoiceSettingsId"/>
+			<column name="closingWeekday" datatype="integer"/>
+			<column name="daysToDueDate" datatype="integer"/>
+		</table>
+		
+		<table name="invoiceQueue">
+			<column name="transactionId" datatype="long" foreign-key-id="transactionId"/>
+		</table>
+		
+	    <table name="paymentType">
+			<column name="id" datatype="long" primary-key-id="paymentTypeId"/>
+			<column name="activeEntity" datatype="boolean"/>
+			<column name="systemField" datatype="boolean"/>
+			<column name="description" datatype="string" size="128"/>
+		</table>
+		
+		<table name="quantifier">
+			<column name="id" datatype="long" primary-key-id="quantifierId"/>
+			<column name="activeEntity" datatype="boolean"/>
+			<column name="systemEntity" datatype="boolean"/>
+			<column name="description" datatype="string" size="128"/>
+			<column name="abbreviation" datatype="string" size="4"/>
+			<column name="decimalPlaces" datatype="integer"/>
+		</table>
+		
+		<table name="supplier">
+			<column name="id" datatype="long" primary-key-id="supplierId"/>
+			<column name="activeEntity" datatype="boolean"/>
+			<column name="name" datatype="string" size="50"/>
+			<column name="email" datatype="string" size="120"/>
+			<column name="addressCity" datatype="string" size="50"/>
+			<column name="addressPostalCode" datatype="string" size="12"/>
+			<column name="addressState" datatype="string" size="2"/>
+			<column name="addressStreet" datatype="string" size="40"/>
+			<column name="responsiblePersonName" datatype="string" size="50"/>
+			<column name="responsiblePersonEmail" datatype="string" size="50"/>
+			<column name="phone1" datatype="string" size="30"/>
+			<column name="phone2" datatype="string" size="30"/>
+			<column name="phone3" datatype="string" size="30"/>
+		</table>
+		
+		<table name="systemProperty">
+			<column name="propertyKey" datatype="string" size="128" primary-key-id="propertyKey"/>
+			<column name="propertyValue" datatype="string" size="128"/>
+		</table>
+		
+		<table name="transaction">
+			<column name="id" datatype="long" primary-key-id="transactionId"/>
+			<column name="transactionDate" datatype="date"/>
+			<column name="clientId" datatype="long" foreign-key-id="clientId"/>
+			<!-- todo melhorar essa modelagem. como seria em outro payment system? -->
+			<!--  invoice deveria ter transactionID -->
+			<column name="invoiceId" datatype="long" foreign-key-id="invoiceId"/>
+			<column name="paid" datatype="boolean"/>
+			<column name="customField1" datatype="string" size="255"/>
+		</table>
+		
+		<table name="transactionItem">
+			<column name="id" datatype="long" primary-key-id="transactionItemId"/>
+			<column name="transactionId" datatype="long" foreign-key-id="transactionId"/>
+			<column name="transactionObjectId" datatype="long" foreign-key-id="transactionObjectId"/>
+			<column name="amount" datatype="double"/>
+			<column name="discountOnCost" datatype="double"/>
+			<column name="costWhenTransactionWasDone" datatype="double"/>
+		</table>
+		
+		<table name="transactionObject">
+			<column name="id" datatype="long" primary-key-id="transactionObjectId"/>
+			<column name="activeEntity" datatype="boolean"/>
+			<column name="description" datatype="string" size="50"/>
+			<column name="cost" datatype="double"/>
+			<column name="quantifierId" datatype="long" foreign-key-id="quantifierId"/>
+			<column name="transactionObjectCategoryId" datatype="long" foreign-key-id="transactionObjectCategoryId"/>
+		</table>
+		
+		<table name="transactionObjectCategory">
+			<column name="id" datatype="long" primary-key-id="transactionObjectCategoryId"/>
+			<column name="description" datatype="string" size="50"/>
+			<column name="active" datatype="boolean"/>
+		</table>
+		
+		
+		<table name="transactionObjectHistory">
+			<column name="id" datatype="long" primary-key-id="transactionObjectHistoryId"/>
+			<column name="historyDate" datatype="date"/>
+			<column name="historyUser" datatype="long" foreign-key-id="userId"/>
+			<column name="cost" datatype="double"/>
+			<column name="description" datatype="string" size="50"/> <!--  same as transactionObject description -->
+			<column name="transactionObjectId" datatype="long" foreign-key-id="transactionObjectId"/>
+		</table>
+		
+		<table name="userInformation">
+			<column name="id" datatype="long" primary-key-id="userId"/>
+			<column name="activeEntity" datatype="boolean"/>
+			<column name="username" datatype="string" size="30"/>
+			<column name="fullname" datatype="string" size="50"/>
+		</table>
+
+	</table-schema>
+	
+	<table-data table="nextId">
+		<row>
+			<entry column="clientId" value="1"/>
+			<entry column="invoiceId" value="1"/>
+			<entry column="invoiceSettingsId" value="1"/>
+			<entry column="paymentTypeId" value="2"/>
+			<entry column="quantifierId" value="5"/>
+			<entry column="supplierId" value="1"/>
+			<entry column="transactionId" value="1"/>
+			<entry column="transactionItemId" value="1"/>
+			<entry column="transactionObjectId" value="1"/>
+			<entry column="transactionObjectCategoryId" value="2"/>
+			<entry column="transactionObjectHistoryId" value="1"/>
+			<entry column="userId" value="2"/>
+			<entry column="userPermissionsId" value="1"/>
+		</row>
+	</table-data>
+				
+	<table-data table="paymentType">
+		<row>
+			<entry column="id" value= "1"/>
+			<entry column="activeEntity" value= "true"/>
+			<entry column="systemField" value= "true"/>
+			<entry column="description" value= "Dinheiro"/>
+		</row>
+	</table-data>
+	
+		<table-data table="quantifier">
+		<row>
+			<entry column="id" value="1"/>
+			<entry column="activeEntity" value="true"/>
+			<entry column="systemEntity" value="true"/>
+			<entry column="description" value="Unidade"/>
+			<entry column="abbreviation" value="Un"/>
+			<entry column="decimalPlaces" value="0"/>
+		</row>
+		
+		<row>
+			<entry column="id" value="2"/>
+			<entry column="activeEntity" value="true"/>
+			<entry column="systemEntity" value="false"/>
+			<entry column="description" value="Litro"/>
+			<entry column="abbreviation" value="L"/>
+			<entry column="decimalPlaces" value="3"/>
+		</row>
+		
+		<row>
+			<entry column="id" value="3"/>
+			<entry column="activeEntity" value="true"/>
+			<entry column="systemEntity" value="false"/>
+			<entry column="description" value="Quilo"/>
+			<entry column="abbreviation" value="Kg"/>
+			<entry column="decimalPlaces" value="3"/>
+		</row>
+		
+		<row>
+			<entry column="id" value="4"/>
+			<entry column="activeEntity" value="true"/>
+			<entry column="systemEntity" value="false"/>
+			<entry column="description" value="Dia"/>
+			<entry column="abbreviation" value="Dia"/>
+			<entry column="decimalPlaces" value="1"/>
+		</row>
+	</table-data>
+		
+	<table-data table="systemProperty">
+		<row>
+			<entry column="propertyKey" value="company.name"/>
+			<entry column="propertyValue" value="Empresa"/>
+		</row>
+		<row>
+			<entry column="propertyKey" value="company.taxidnumber"/>
+			<entry column="propertyValue" value=""/>
+		</row>
+		<row>
+			<entry column="propertyKey" value="company.address"/>
+			<entry column="propertyValue" value=""/>
+		</row>
+		<row>
+			<entry column="propertyKey" value="system.locale"/>
+			<entry column="propertyValue" value="pt_BR"/>
+		</row>
+	</table-data>
+		
+	<table-data table="transactionObjectCategory">
+		<row>
+			<entry column="id" value="1"/>
+			<entry column="active" value="true"/>
+			<entry column="description" value="Outros"/>
+		</row>
+	</table-data>
+	
+	<table-data table="transactionObjectCategory">
+		<row>
+			<entry column="id" value="1"/>
+			<entry column="active" value="true"/>
+			<entry column="description" value="Outros"/>
+		</row>
+	</table-data>
+
+	<table-data table="userInformation">
+		<row>
+			<entry column="id" value="1"/>
+			<entry column="activeEntity" value="true"/>
+			<entry column="username" value="adm"/>
+			<entry column="fullname" value="Administrador do Sistema"/>
+		</row>
+	</table-data>	
+</db-schema>

@@ -1,0 +1,26 @@
+<project name="dbservices" default="main">
+
+	<property file="build.properties" />
+		
+	<target name="main" description="Create dbservices jar">
+		<delete dir="${tmp.dir}" />
+		<mkdir dir="${tmp.dir}" />
+
+		<delete dir="${distr.dir}" />
+		<mkdir dir="${distr.dir}" />
+
+		<copy todir="${distr.dir}">
+			<fileset dir="${lib.dir}" />
+		</copy>
+		
+		<copy todir="${tmp.dir}">
+			<fileset dir="${bin.dir}" />
+		</copy>
+
+		<jar jarfile="${distr.dir}/dbservices-${version}.jar">		
+			<fileset dir="${tmp.dir}" />
+		</jar>
+
+		<delete dir="${tmp.dir}" />
+	</target>
+</project>
